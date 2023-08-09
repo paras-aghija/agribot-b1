@@ -13,6 +13,7 @@ import torch
 from torchvision import transforms
 from PIL import Image
 from utils.model import ResNet9
+from flask import jsonify
 # ==============================================================================================
 
 # -------------------------LOADING THE TRAINED MODELS -----------------------------------------------
