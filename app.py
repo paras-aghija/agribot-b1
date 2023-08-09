@@ -185,11 +185,11 @@ def crop_prediction():
             my_prediction = crop_recommendation_model.predict(data)
             final_prediction = my_prediction[0]
 
-            return render_template('crop-result.html', prediction=final_prediction, title=title)
+            return jsonify(final_prediction)
 
         else:
 
-            return render_template('try_again.html', title=title)
+            return abort(404)
 
 # render fertilizer recommendation result page
 
