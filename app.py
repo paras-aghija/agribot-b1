@@ -14,6 +14,7 @@ from torchvision import transforms
 from PIL import Image
 from utils.model import ResNet9
 from flask import jsonify
+from flask import abort
 # ==============================================================================================
 
 # -------------------------LOADING THE TRAINED MODELS -----------------------------------------------
