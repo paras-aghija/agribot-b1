@@ -234,25 +234,29 @@ def fert_recommend():
             key = "Klow"
 
     response = Markup(str(fertilizer_dic[key]))
-
+    print(response)
     return render_template('fertilizer-result.html', recommendation=response, title=title)
 
 # render disease prediction result page
-
 
 @app.route('/disease-predict', methods=['GET', 'POST'])
 def disease_prediction():
     title = 'Harvestify - Disease Detection'
 
     if request.method == 'POST':
-        if 'file' not in request.files:
-            return redirect(request.url)
-        file = request.files.get('file')
-        if not file:
-            return render_template('disease.html', title=title)
+        # if 'file' not in request.files:
+        #     return redirect(request.url)
+        # file = request.files.get('file')
+        # if not file:
+        #     return render_template('disease.html', title=title)
+        print(request)
+        temp_url = request.form["image"]
+        print(temp_url)
         try:
-            img = file.read()
-            prediction = predict_image(img)
+            # img = file.read()
+            #url = "http://192.168.0.105:8000/image.png"
+            response2 = requests.get(temp_url).content
+            prediction = predict_image(response2)
             prediction = Markup(str(disease_dic[prediction]))
             json_txt = prediction
             prediction = jsonify(prediction)
@@ -277,16 +281,11 @@ def disease_prediction():
                     removeSpace(colon_list[4].split("How to prevent/cure the disease:")[1].replace("<br/>", "")).split(
                         "\n"))
                 temp = Cause_of_Disease.split("<br/>")
-                print(temp)
+                #print(temp)
                 Cause_of_Disease = Cause_of_Disease.replace("\n", "")
                 Cause_of_Disease = Cause_of_Disease.split('<br/>')[2].rstrip()
                 Prevention = Prevention.replace("\n","")
                 Prevention = Prevention.replace("<br/>", "")
-
-                # print("This is Crop !!! : " + Crop)
-                # print("This is Disease : !!! : " + Disease)
-                # print("this is Cause : " + Cause_of_Disease)
-                # print("this is preventiosn : " + Prevention)
                 Data = {"Crop": Crop, "Disease": Disease, "Cause": Cause_of_Disease, "Prevention": Prevention}
 
             #print(Data)
