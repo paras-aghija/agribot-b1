@@ -252,11 +252,46 @@ def disease_prediction():
             return render_template('disease.html', title=title)
         try:
             img = file.read()
-
             prediction = predict_image(img)
-
             prediction = Markup(str(disease_dic[prediction]))
-            return render_template('disease-result.html', prediction=prediction, title=title)
+            json_txt = prediction
+            prediction = jsonify(prediction)
+
+            colon_list = json_txt.split("#")
+            Disease = colon_list[2].split("<br/>")[0].split(":")[1]
+            Crop = colon_list[1].split(":")[1]
+            Data = {}
+            if (Disease == "No disease"):
+                Data = {"Crop": Crop, "Disease": Disease}
+            else:
+                def removeSpace(str):
+                    while (str[0] == ' ' or str[0] == '\n'):
+                        str = str[1::]
+                    while (str[-1] == ' ' or str[-1] == '\n'):
+                        str = str[:-1]
+                    return str
+
+                Cause_of_Disease = removeSpace(
+                    colon_list[3].replace("<br/>", "").split("Cause of Disease:")[1])
+                Prevention = "".join(
+                    removeSpace(colon_list[4].split("How to prevent/cure the disease:")[1].replace("<br/>", "")).split(
+                        "\n"))
+                temp = Cause_of_Disease.split("<br/>")
+                print(temp)
+                Cause_of_Disease = Cause_of_Disease.replace("\n", "")
+                Cause_of_Disease = Cause_of_Disease.split('<br/>')[2].rstrip()
+                Prevention = Prevention.replace("\n","")
+                Prevention = Prevention.replace("<br/>", "")
+
+                # print("This is Crop !!! : " + Crop)
+                # print("This is Disease : !!! : " + Disease)
+                # print("this is Cause : " + Cause_of_Disease)
+                # print("this is preventiosn : " + Prevention)
+                Data = {"Crop": Crop, "Disease": Disease, "Cause": Cause_of_Disease, "Prevention": Prevention}
+
+            #print(Data)
+
+            return jsonify(Data)
         except:
             pass
     return render_template('disease.html', title=title)
