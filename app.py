@@ -344,21 +344,16 @@ def crop_prediction():
 
         # state = request.form.get("stt")
         city = request.form.get("city")
-
         if weather_fetch(city) != None:
             temperature, humidity = weather_fetch(city)
             data = np.array([[N, P, K, temperature, humidity, ph, rainfall]])
             my_prediction = crop_recommendation_model.predict(data)
             final_prediction = my_prediction[0]
-
             return jsonify(final_prediction)
-
         else:
-
             return abort(404)
 
 # render fertilizer recommendation result page
-
 
 @ app.route('/fertilizer-predict', methods=['POST'])
 def fert_recommend():
@@ -408,17 +403,10 @@ def disease_prediction():
     title = 'Harvestify - Disease Detection'
 
     if request.method == 'POST':
-        # if 'file' not in request.files:
-        #     return redirect(request.url)
-        # file = request.files.get('file')
-        # if not file:
-        #     return render_template('disease.html', title=title)
         print(request)
         temp_url = request.form["image"]
         print(temp_url)
         try:
-            # img = file.read()
-            #url = "http://192.168.0.105:8000/image.png"
             response2 = requests.get(temp_url).content
             prediction = predict_image(response2)
             prediction = Markup(str(disease_dic[prediction]))
@@ -451,8 +439,6 @@ def disease_prediction():
                 Prevention = Prevention.replace("\n","")
                 Prevention = Prevention.replace("<br/>", "")
                 Data = {"Crop": Crop, "Disease": Disease, "Cause": Cause_of_Disease, "Prevention": Prevention}
-
-            #print(Data)
 
             return jsonify(Data)
         except:
