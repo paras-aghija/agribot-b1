@@ -7,3 +7,4 @@ torchvision==0.8.1
 requests
 Pillow
 gunicorn == 20.0.4
+urllib3==1.26.6
