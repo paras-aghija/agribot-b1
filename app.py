@@ -250,7 +250,8 @@ def disease_prediction():
         # if not file:
         #     return render_template('disease.html', title=title)
         print(request)
-        temp_url = request.form["image"]
+        data = request.get_json()
+        temp_url = data["image"]
         print(temp_url)
         try:
             # img = file.read()
@@ -292,7 +293,7 @@ def disease_prediction():
 
             return jsonify(Data)
         except:
-            pass
+            return abort(404)
     return render_template('disease.html', title=title)
 
 
